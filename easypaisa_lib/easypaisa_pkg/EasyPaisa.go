@@ -6,33 +6,35 @@
 
 package easypaisa_pkg
 
-import "easypaisa_lib/models_pkg"
-import "easypaisa_lib/configuration_pkg"
+import (
+	"github.com/SmarticleLABS/maalomaal/easypaisa_lib/configuration_pkg"
+	"github.com/SmarticleLABS/maalomaal/easypaisa_lib/models_pkg"
+)
 
 /*
  * Interface for the EASYPAISA_IMPL
  */
 type EASYPAISA interface {
-    CreateMerchantPayment (*models_pkg.MerchantPaymentRequest) (*models_pkg.MerchantPaymentResponse, error)
+	CreateMerchantPayment(*models_pkg.MerchantPaymentRequest) (*models_pkg.MerchantPaymentResponse, error)
 
-    GetCompanyList () (*models_pkg.GetCompanyListResponse, error)
+	GetCompanyList() (*models_pkg.GetCompanyListResponse, error)
 
-    GetBillInquiry (string, string, string) (*models_pkg.BillInquiryResponse, error)
+	GetBillInquiry(string, string, string) (*models_pkg.BillInquiryResponse, error)
 
-    CreateBillPayment (string, *models_pkg.BillPaymentRequest) (*models_pkg.BillPaymentResponse, error)
+	CreateBillPayment(string, *models_pkg.BillPaymentRequest) (*models_pkg.BillPaymentResponse, error)
 
-    CreateMoneyTransferToMobileAccount (*models_pkg.MoneyTransferToMobileAccountRequest) (*models_pkg.MoneyTransferToMobileAccountRequest, error)
+	CreateMoneyTransferToMobileAccount(*models_pkg.MoneyTransferToMobileAccountRequest) (*models_pkg.MoneyTransferToMobileAccountRequest, error)
 
-    CreateMoneyTransferToBank (*models_pkg.MoneyTransferToBankRequest) (*models_pkg.MoneyTransferToBankResponse, error)
+	CreateMoneyTransferToBank(*models_pkg.MoneyTransferToBankRequest) (*models_pkg.MoneyTransferToBankResponse, error)
 
-    CreateSendMoneyToMobileAccount (*models_pkg.SendMoneyToMobileAccountRequest) (*models_pkg.SendMoneyToMobileAccountResponse, error)
+	CreateSendMoneyToMobileAccount(*models_pkg.SendMoneyToMobileAccountRequest) (*models_pkg.SendMoneyToMobileAccountResponse, error)
 }
 
 /*
  * Factory for the EASYPAISA interaface returning EASYPAISA_IMPL
  */
 func NewEASYPAISA(config configuration_pkg.CONFIGURATION) *EASYPAISA_IMPL {
-    client := new(EASYPAISA_IMPL)
-    client.config = config
-    return client
+	client := new(EASYPAISA_IMPL)
+	client.config = config
+	return client
 }

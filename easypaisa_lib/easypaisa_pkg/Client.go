@@ -6,19 +6,20 @@
 
 package easypaisa_pkg
 
-
-import(
+import (
 	"encoding/json"
-	"easypaisa_lib/models_pkg"
+
+	"github.com/SmarticleLABS/maalomaal/easypaisa_lib/apihelper_pkg"
+	"github.com/SmarticleLABS/maalomaal/easypaisa_lib/configuration_pkg"
+	"github.com/SmarticleLABS/maalomaal/easypaisa_lib/models_pkg"
 	"github.com/apimatic/unirest-go"
-	"easypaisa_lib/apihelper_pkg"
-	"easypaisa_lib/configuration_pkg"
 )
+
 /*
  * Client structure as interface implementation
  */
 type EASYPAISA_IMPL struct {
-     config configuration_pkg.CONFIGURATION
+	config configuration_pkg.CONFIGURATION
 }
 
 /**
@@ -26,60 +27,60 @@ type EASYPAISA_IMPL struct {
  * @param    *models_pkg.MerchantPaymentRequest        body                    parameter: Required
  * @return	Returns the *models_pkg.MerchantPaymentResponse response from the API call
  */
-func (me *EASYPAISA_IMPL) CreateMerchantPayment (
-            body *models_pkg.MerchantPaymentRequest) (*models_pkg.MerchantPaymentResponse, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) CreateMerchantPayment(
+	body *models_pkg.MerchantPaymentRequest) (*models_pkg.MerchantPaymentResponse, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/debitma/v0/mm/transactions"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/debitma/v0/mm/transactions"
 
-    //variable to hold errors
-    var err error = nil
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "x-api-key" : "TelenorAPIGW",
-        "X-User-Credential-1" : "VGVzdEFQSTpkMjhkZjg5M2YxYzA4YzZhNWNlMGVmYTg5NmMyOTQzZQ==",
-        "X-Channel" : "apollo",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"content-type":        "application/json; charset=utf-8",
+		"x-api-key":           "TelenorAPIGW",
+		"X-User-Credential-1": "VGVzdEFQSTpkMjhkZjg5M2YxYzA4YzZhNWNlMGVmYTg5NmMyOTQzZQ==",
+		"X-Channel":           "apollo",
+	}
 
-    //prepare API request
-    _request := unirest.Post(_queryBuilder, headers, body)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Post(_queryBuilder, headers, body)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.MerchantPaymentResponse = &models_pkg.MerchantPaymentResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.MerchantPaymentResponse = &models_pkg.MerchantPaymentResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -87,58 +88,58 @@ func (me *EASYPAISA_IMPL) CreateMerchantPayment (
  * TODO: type endpoint description here
  * @return	Returns the *models_pkg.GetCompanyListResponse response from the API call
  */
-func (me *EASYPAISA_IMPL) GetCompanyList () (*models_pkg.GetCompanyListResponse, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) GetCompanyList() (*models_pkg.GetCompanyListResponse, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/v0/mm/billcompanies"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/v0/mm/billcompanies"
 
-    //variable to hold errors
-    var err error = nil
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "X-API-Key" : "TelenorAPIGW",
-        "X-User-Credential-1" : "MjgwNkA5MjM0NTg1NTk1NjE6MTExMTE=",
-        "X-Channel" : "apollo",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"X-API-Key":           "TelenorAPIGW",
+		"X-User-Credential-1": "MjgwNkA5MjM0NTg1NTk1NjE6MTExMTE=",
+		"X-Channel":           "apollo",
+	}
 
-    //prepare API request
-    _request := unirest.Get(_queryBuilder, headers)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Get(_queryBuilder, headers)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.GetCompanyListResponse = &models_pkg.GetCompanyListResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.GetCompanyListResponse = &models_pkg.GetCompanyListResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -149,72 +150,72 @@ func (me *EASYPAISA_IMPL) GetCompanyList () (*models_pkg.GetCompanyListResponse,
  * @param    string        bill                    parameter: Required
  * @return	Returns the *models_pkg.BillInquiryResponse response from the API call
  */
-func (me *EASYPAISA_IMPL) GetBillInquiry (
-            msisdn string,
-            consumer string,
-            bill string) (*models_pkg.BillInquiryResponse, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) GetBillInquiry(
+	msisdn string,
+	consumer string,
+	bill string) (*models_pkg.BillInquiryResponse, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/v0/mm/account/msisdn@{msisdn}$consumerno@{consumer}$billcompany@{bill}/bills"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/v0/mm/account/msisdn@{msisdn}$consumerno@{consumer}$billcompany@{bill}/bills"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional query parameters
-    _queryBuilder, err = apihelper_pkg.AppendUrlWithTemplateParameters(_queryBuilder, map[string]interface{} {
-        "msisdn" : msisdn,
-        "consumer" : consumer,
-        "bill" : bill,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional query parameters
+	_queryBuilder, err = apihelper_pkg.AppendUrlWithTemplateParameters(_queryBuilder, map[string]interface{}{
+		"msisdn":   msisdn,
+		"consumer": consumer,
+		"bill":     bill,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "X-API-Key" : "TelenorAPIGW",
-        "X-Channel" : "corp",
-        "X-User-Credential-1" : "bXNwb3M0OkVyaWNzc29uQDA5OA",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"X-API-Key":           "TelenorAPIGW",
+		"X-Channel":           "corp",
+		"X-User-Credential-1": "bXNwb3M0OkVyaWNzc29uQDA5OA",
+	}
 
-    //prepare API request
-    _request := unirest.Get(_queryBuilder, headers)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Get(_queryBuilder, headers)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.BillInquiryResponse = &models_pkg.BillInquiryResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.BillInquiryResponse = &models_pkg.BillInquiryResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -224,70 +225,70 @@ func (me *EASYPAISA_IMPL) GetBillInquiry (
  * @param    *models_pkg.BillPaymentRequest        body                    parameter: Required
  * @return	Returns the *models_pkg.BillPaymentResponse response from the API call
  */
-func (me *EASYPAISA_IMPL) CreateBillPayment (
-            msisdn string,
-            body *models_pkg.BillPaymentRequest) (*models_pkg.BillPaymentResponse, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) CreateBillPayment(
+	msisdn string,
+	body *models_pkg.BillPaymentRequest) (*models_pkg.BillPaymentResponse, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/v0/mm/accounts/msisdn@{msisdn}/bills/0/payments"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/v0/mm/accounts/msisdn@{msisdn}/bills/0/payments"
 
-    //variable to hold errors
-    var err error = nil
-    //process optional query parameters
-    _queryBuilder, err = apihelper_pkg.AppendUrlWithTemplateParameters(_queryBuilder, map[string]interface{} {
-        "msisdn" : msisdn,
-    })
-    if err != nil {
-        //error in template param handling
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//process optional query parameters
+	_queryBuilder, err = apihelper_pkg.AppendUrlWithTemplateParameters(_queryBuilder, map[string]interface{}{
+		"msisdn": msisdn,
+	})
+	if err != nil {
+		//error in template param handling
+		return nil, err
+	}
 
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "X-API-Key" : "TelenorAPIGW",
-        "X-User-Credential-1" : "MjgwNkA5MjM0NTg1NTk1NjE6NTQzMjE=",
-        "X-Channel" : "apollo",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"content-type":        "application/json; charset=utf-8",
+		"X-API-Key":           "TelenorAPIGW",
+		"X-User-Credential-1": "MjgwNkA5MjM0NTg1NTk1NjE6NTQzMjE=",
+		"X-Channel":           "apollo",
+	}
 
-    //prepare API request
-    _request := unirest.Post(_queryBuilder, headers, body)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Post(_queryBuilder, headers, body)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.BillPaymentResponse = &models_pkg.BillPaymentResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.BillPaymentResponse = &models_pkg.BillPaymentResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -296,60 +297,60 @@ func (me *EASYPAISA_IMPL) CreateBillPayment (
  * @param    *models_pkg.MoneyTransferToMobileAccountRequest        body                    parameter: Required
  * @return	Returns the *models_pkg.MoneyTransferToMobileAccountRequest response from the API call
  */
-func (me *EASYPAISA_IMPL) CreateMoneyTransferToMobileAccount (
-            body *models_pkg.MoneyTransferToMobileAccountRequest) (*models_pkg.MoneyTransferToMobileAccountRequest, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) CreateMoneyTransferToMobileAccount(
+	body *models_pkg.MoneyTransferToMobileAccountRequest) (*models_pkg.MoneyTransferToMobileAccountRequest, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/transferMA/v0/mm/transactions"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/transferMA/v0/mm/transactions"
 
-    //variable to hold errors
-    var err error = nil
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "x-api-key" : "TelenorAPIGW",
-        "X-User-Credential-1" : "OTIzNDU4NDk2Mzg0OjEyMTIx",
-        "X-Channel" : "subapp10",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"content-type":        "application/json; charset=utf-8",
+		"x-api-key":           "TelenorAPIGW",
+		"X-User-Credential-1": "OTIzNDU4NDk2Mzg0OjEyMTIx",
+		"X-Channel":           "subapp10",
+	}
 
-    //prepare API request
-    _request := unirest.Post(_queryBuilder, headers, body)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Post(_queryBuilder, headers, body)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.MoneyTransferToMobileAccountRequest = &models_pkg.MoneyTransferToMobileAccountRequest{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.MoneyTransferToMobileAccountRequest = &models_pkg.MoneyTransferToMobileAccountRequest{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -358,60 +359,60 @@ func (me *EASYPAISA_IMPL) CreateMoneyTransferToMobileAccount (
  * @param    *models_pkg.MoneyTransferToBankRequest        body                    parameter: Required
  * @return	Returns the *models_pkg.MoneyTransferToBankResponse response from the API call
  */
-func (me *EASYPAISA_IMPL) CreateMoneyTransferToBank (
-            body *models_pkg.MoneyTransferToBankRequest) (*models_pkg.MoneyTransferToBankResponse, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) CreateMoneyTransferToBank(
+	body *models_pkg.MoneyTransferToBankRequest) (*models_pkg.MoneyTransferToBankResponse, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/transferBank/v0/mm/transactions"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/transferBank/v0/mm/transactions"
 
-    //variable to hold errors
-    var err error = nil
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "x-api-key" : "TelenorAPIGW",
-        "X-User-Credential-1" : "OTIzNDU4NDk2Mzg0OjEyMTIx",
-        "X-Channel" : "apollo",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"content-type":        "application/json; charset=utf-8",
+		"x-api-key":           "TelenorAPIGW",
+		"X-User-Credential-1": "OTIzNDU4NDk2Mzg0OjEyMTIx",
+		"X-Channel":           "apollo",
+	}
 
-    //prepare API request
-    _request := unirest.Post(_queryBuilder, headers, body)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Post(_queryBuilder, headers, body)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.MoneyTransferToBankResponse = &models_pkg.MoneyTransferToBankResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.MoneyTransferToBankResponse = &models_pkg.MoneyTransferToBankResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
 
@@ -420,60 +421,59 @@ func (me *EASYPAISA_IMPL) CreateMoneyTransferToBank (
  * @param    *models_pkg.SendMoneyToMobileAccountRequest        body                    parameter: Required
  * @return	Returns the *models_pkg.SendMoneyToMobileAccountResponse response from the API call
  */
-func (me *EASYPAISA_IMPL) CreateSendMoneyToMobileAccount (
-            body *models_pkg.SendMoneyToMobileAccountRequest) (*models_pkg.SendMoneyToMobileAccountResponse, error) {
-        //the base uri for api requests
-    _queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT,me.config);
+func (me *EASYPAISA_IMPL) CreateSendMoneyToMobileAccount(
+	body *models_pkg.SendMoneyToMobileAccountRequest) (*models_pkg.SendMoneyToMobileAccountResponse, error) {
+	//the base uri for api requests
+	_queryBuilder := configuration_pkg.GetBaseURI(configuration_pkg.DEFAULT, me.config)
 
-    //prepare query string for API call
-   _queryBuilder = _queryBuilder + "/otctoma/v0/mm/transactions"
+	//prepare query string for API call
+	_queryBuilder = _queryBuilder + "/otctoma/v0/mm/transactions"
 
-    //variable to hold errors
-    var err error = nil
-    //validate and preprocess url
-    _queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
-    if err != nil {
-        //error in url validation or cleaning
-        return nil, err
-    }
+	//variable to hold errors
+	var err error = nil
+	//validate and preprocess url
+	_queryBuilder, err = apihelper_pkg.CleanUrl(_queryBuilder)
+	if err != nil {
+		//error in url validation or cleaning
+		return nil, err
+	}
 
-    //prepare headers for the outgoing request
-    headers := map[string]interface{} {
-        "user-agent" : "APIMATIC 2.0",
-        "accept" : "application/json",
-        "content-type" : "application/json; charset=utf-8",
-        "x-api-key" : "TelenorAPIGW",
-        "X-User-Credential-1" : "MjgwNkA5MjM0NTg1NTk1NjE6MjIzMjI",
-        "X-Channel" : "apollo",
-    }
+	//prepare headers for the outgoing request
+	headers := map[string]interface{}{
+		"user-agent":          "APIMATIC 2.0",
+		"accept":              "application/json",
+		"content-type":        "application/json; charset=utf-8",
+		"x-api-key":           "TelenorAPIGW",
+		"X-User-Credential-1": "MjgwNkA5MjM0NTg1NTk1NjE6MjIzMjI",
+		"X-Channel":           "apollo",
+	}
 
-    //prepare API request
-    _request := unirest.Post(_queryBuilder, headers, body)
-    //and invoke the API call request to fetch the response
-    _response, err := unirest.AsString(_request);
-    if err != nil {
-        //error in API invocation
-        return nil, err
-    }
+	//prepare API request
+	_request := unirest.Post(_queryBuilder, headers, body)
+	//and invoke the API call request to fetch the response
+	_response, err := unirest.AsString(_request)
+	if err != nil {
+		//error in API invocation
+		return nil, err
+	}
 
-    //error handling using HTTP status codes
-    if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
-        err = apihelper_pkg.NewAPIError("HTTP Response Not OK" , _response.Code, _response.RawBody)
-    }
-    if(err != nil) {
-        //error detected in status code validation
-        return nil, err
-    }
+	//error handling using HTTP status codes
+	if (_response.Code < 200) || (_response.Code > 206) { //[200,206] = HTTP OK
+		err = apihelper_pkg.NewAPIError("HTTP Response Not OK", _response.Code, _response.RawBody)
+	}
+	if err != nil {
+		//error detected in status code validation
+		return nil, err
+	}
 
-    //returning the response
-    var retVal *models_pkg.SendMoneyToMobileAccountResponse = &models_pkg.SendMoneyToMobileAccountResponse{}
-    err = json.Unmarshal(_response.RawBody, &retVal)
+	//returning the response
+	var retVal *models_pkg.SendMoneyToMobileAccountResponse = &models_pkg.SendMoneyToMobileAccountResponse{}
+	err = json.Unmarshal(_response.RawBody, &retVal)
 
-    if err != nil {
-        //error in parsing
-        return nil, err
-    }
-    return retVal, nil
+	if err != nil {
+		//error in parsing
+		return nil, err
+	}
+	return retVal, nil
 
 }
-
